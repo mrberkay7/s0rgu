@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B3RKAY S0RGU</title>
+    <title>BERKAY SORGU</title>
     <style>
         * {
             margin: 0;
@@ -149,8 +149,6 @@
             margin: 10px 0;
         }
 
-       
-
         /* Ana Panel */
         .main-panel {
             max-width: 800px;
@@ -294,9 +292,6 @@
                 <input type="password" class="form-control" id="loginPassword" placeholder="Şifreniz">
             </div>
             <button class="btn" onclick="login()">Giriş Yap</button>
-            
-            
-            </button>
         </div>
 
         <!-- Kayıt Formu -->
@@ -314,11 +309,6 @@
                 <input type="password" class="form-control" id="regPassword" placeholder="Şifre oluşturun">
             </div>
             <button class="btn" onclick="register()">Kayıt Ol</button>
-            
-            <button class="btn btn-google" onclick="googleRegister()">
-                <div class="google-icon"></div>
-                Google ile Kayıt Ol
-            </button>
         </div>
 
         <div id="message"></div>
@@ -422,53 +412,6 @@
         let users = JSON.parse(localStorage.getItem('berkay_users')) || [];
         let logs = JSON.parse(localStorage.getItem('berkay_logs')) || [];
 
-        // Google Giriş - GERÇEK
-        function googleLogin() {
-            // Firebase Authentication entegrasyonu
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-                    handleGoogleUser(user, 'login');
-                })
-                .catch((error) => {
-                    showMessage('Google giriş hatası: ' + error.message, 'error');
-                });
-        }
-
-        function googleRegister() {
-            const provider = new firebase.auth.GoogleAuthProvider();
-            firebase.auth().signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-                    handleGoogleUser(user, 'register');
-                })
-                .catch((error) => {
-                    showMessage('Google kayıt hatası: ' + error.message, 'error');
-                });
-        }
-
-        function handleGoogleUser(googleUser, action) {
-            const userData = {
-                id: googleUser.uid,
-                username: googleUser.displayName,
-                email: googleUser.email,
-                googleUser: true,
-                createdAt: new Date().toISOString()
-            };
-
-            if (action === 'register') {
-                users.push(userData);
-                localStorage.setItem('berkay_users', JSON.stringify(users));
-            }
-
-            currentUser = userData;
-            localStorage.setItem('berkay_current_user', JSON.stringify(userData));
-            showMainPanel();
-            showWelcomePopup();
-            showMessage('Google ile ' + (action === 'login' ? 'giriş' : 'kayıt') + ' başarılı!', 'success');
-        }
-
         function register() {
             const username = document.getElementById('regUsername').value;
             const email = document.getElementById('regEmail').value;
@@ -489,8 +432,8 @@
                 username: username,
                 email: email,
                 password: password,
-                googleUser: false,
-                createdAt: new Date().toISOString()
+                createdAt: new Date().toISOString(),
+                queryCount: 0
             };
 
             users.push(newUser);
@@ -517,9 +460,6 @@
         }
 
         function logout() {
-            if (currentUser && currentUser.googleUser) {
-                firebase.auth().signOut();
-            }
             currentUser = null;
             localStorage.removeItem('berkay_current_user');
             document.getElementById('mainPanel').style.display = 'none';
@@ -574,12 +514,25 @@
                 document.getElementById('resultsContent').textContent = result;
                 document.getElementById('results').style.display = 'block';
                 
+                // Sorgu sayısını güncelle
+                currentUser.queryCount = (currentUser.queryCount || 0) + 1;
+                updateUser(currentUser);
+                
             } catch (error) {
                 showMessage('API hatası: ' + error.message, 'error');
             }
         }
 
-        // Admin Panel
+        function updateUser(updatedUser) {
+            const index = users.findIndex(u => u.id === updatedUser.id);
+            if (index !== -1) {
+                users[index] = updatedUser;
+                localStorage.setItem('berkay_users', JSON.stringify(users));
+                localStorage.setItem('berkay_current_user', JSON.stringify(updatedUser));
+            }
+        }
+
+        // GELİŞMİŞ ADMIN PANEL
         function openAdminPanel() {
             const password = prompt('Admin Şifresi:');
             if (password === 'berkaysiker7') {
@@ -590,22 +543,83 @@
         }
 
         function showAdminPanel() {
+            const totalQueries = users.reduce((sum, user) => sum + (user.queryCount || 0), 0);
+            const activeUsers = users.filter(user => user.queryCount > 0).length;
+            
             const adminHTML = `
-                <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px;">
-                    <h4 style="color: #ff6b6b; margin-bottom: 10px;">Sistem İstatistikleri</h4>
-                    <p><strong>Toplam Kullanıcı:</strong> ${users.length}</p>
-                    <p><strong>Toplam Sorgu:</strong> ${logs.length}</p>
+                <div style="margin-top: 20px; padding: 20px; background: rgba(0,0,0,0.4); border-radius: 10px;">
+                    <h4 style="color: #ff6b6b; margin-bottom: 20px; text-align: center;">🔧 ADMIN PANELİ</h4>
                     
-                    <h4 style="color: #ff6b6b; margin: 15px 0 10px 0;">Kullanıcı Listesi</h4>
-                    ${users.map((user, index) => `
-                        <div style="background: rgba(255,255,255,0.05); padding: 10px; margin: 5px 0; border-radius: 5px;">
-                            <strong>Kullanıcı ${index + 1}:</strong> ${user.username} (${user.email})
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.2em; font-weight: bold; color: #007bff;">${users.length}</div>
+                            <div>Toplam Kullanıcı</div>
                         </div>
-                    `).join('')}
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.2em; font-weight: bold; color: #28a745;">${totalQueries}</div>
+                            <div>Toplam Sorgu</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.2em; font-weight: bold; color: #ffc107;">${activeUsers}</div>
+                            <div>Aktif Kullanıcı</div>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 8px; text-align: center;">
+                            <div style="font-size: 1.2em; font-weight: bold; color: #dc3545;">${logs.length}</div>
+                            <div>Toplam Log</div>
+                        </div>
+                    </div>
+                    
+                    <h4 style="color: #ff6b6b; margin: 20px 0 10px 0;">📋 Kullanıcı Listesi</h4>
+                    <div style="max-height: 300px; overflow-y: auto;">
+                        ${users.map((user, index) => `
+                            <div style="background: rgba(255,255,255,0.05); padding: 12px; margin: 8px 0; border-radius: 6px; border-left: 3px solid #007bff;">
+                                <div style="display: flex; justify-content: between; align-items: center;">
+                                    <div>
+                                        <strong>${user.username}</strong>
+                                        <div style="font-size: 0.8em; color: #ccc;">
+                                            ${user.email} • Kayıt: ${new Date(user.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div style="color: #28a745; font-weight: bold;">${user.queryCount || 0} sorgu</div>
+                                        <div style="font-size: 0.8em; color: #ccc;">ID: ${user.id}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button class="btn" onclick="exportData()" style="background: #28a745; margin: 5px;">Verileri Dışa Aktar</button>
+                        <button class="btn" onclick="clearAllData()" style="background: #dc3545; margin: 5px;">Tüm Verileri Temizle</button>
+                    </div>
                 </div>
             `;
             
             document.querySelector('.admin-panel').insertAdjacentHTML('beforeend', adminHTML);
+        }
+
+        function exportData() {
+            const data = {
+                users: users,
+                logs: logs,
+                exportDate: new Date().toISOString()
+            };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'berkay-sorgu-backup.json';
+            a.click();
+            showMessage('Veriler dışa aktarıldı!', 'success');
+        }
+
+        function clearAllData() {
+            if (confirm('TÜM veriler silinecek! Emin misiniz?')) {
+                localStorage.clear();
+                alert('Tüm veriler temizlendi. Sayfa yeniden yüklenecek.');
+                location.reload();
+            }
         }
 
         function showMessage(message, type) {
@@ -623,26 +637,7 @@
                 currentUser = JSON.parse(savedUser);
                 showMainPanel();
             }
-
-            // Firebase başlatma (Google girişi için)
-            const firebaseConfig = {
-                apiKey: "YOUR_API_KEY",
-                authDomain: "YOUR_PROJECT.firebaseapp.com",
-                projectId: "YOUR_PROJECT_ID",
-                storageBucket: "YOUR_PROJECT.appspot.com",
-                messagingSenderId: "YOUR_SENDER_ID",
-                appId: "YOUR_APP_ID"
-            };
-            
-            // Firebase'i başlat
-            if (typeof firebase !== 'undefined') {
-                firebase.initializeApp(firebaseConfig);
-            }
         });
     </script>
-
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </body>
 </html>
