@@ -18,7 +18,7 @@
             min-height: 100vh;
         }
 
-        /* Basit Kar Efekti */
+        /* Kar Efekti */
         #snow-container {
             position: fixed;
             top: 0;
@@ -45,7 +45,28 @@
             }
         }
 
-        /* Basit Başlık */
+        /* Hoşgeldin Popup */
+        .welcome-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #ff6b9d;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 1000;
+            box-shadow: 0 0 50px rgba(255, 107, 157, 0.5);
+        }
+
+        .welcome-title {
+            font-size: 2em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        /* Başlık */
         .header {
             text-align: center;
             padding: 40px 20px;
@@ -59,7 +80,7 @@
             margin-bottom: 10px;
         }
 
-        /* Giriş/Kayıt Seçim Butonları */
+        /* Giriş/Kayıt Tabları */
         .auth-tabs {
             display: flex;
             justify-content: center;
@@ -143,6 +164,36 @@
             border-radius: 50%;
         }
 
+        /* Ana Panel */
+        .main-panel {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .user-welcome {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        /* Sorgulama Paneli */
+        .query-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .query-form {
+            display: grid;
+            grid-template-columns: 1fr 2fr auto;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
         /* Sonuçlar */
         .results {
             background: rgba(0, 0, 0, 0.5);
@@ -159,7 +210,45 @@
             background: rgba(255, 255, 255, 0.05);
             padding: 15px;
             border-radius: 5px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* VIP Bölümü */
+        .vip-section {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: black;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .instagram-link {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+
+        .instagram-logo {
+            width: 24px;
+            height: 24px;
+            background: radial-gradient(circle at 30% 30%, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+            border-radius: 6px;
+            margin-right: 10px;
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
         }
 
         /* Mesajlar */
@@ -184,10 +273,16 @@
     </style>
 </head>
 <body>
-    <!-- Basit Kar Efekti -->
+    <!-- Kar Efekti -->
     <div id="snow-container"></div>
 
-    <!-- Basit Başlık -->
+    <!-- Hoşgeldin Popup -->
+    <div id="welcomePopup" class="welcome-popup" style="display: none;">
+        <div class="welcome-title">BERKAY SORGU</div>
+        <div style="color: white;">Paneline Hoş Geldiniz!</div>
+    </div>
+
+    <!-- Başlık -->
     <div class="header">
         <div class="main-title">BERKAY SORGU</div>
         <div style="color: #ccc;">Profesyonel Sorgulama Sistemi</div>
@@ -244,17 +339,18 @@
         <div id="message"></div>
     </div>
 
-    <!-- Ana Panel (Giriş yapınca görünecek) -->
-    <div id="mainPanel" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <h2>BERKAY SORGU PANELİ</h2>
-            <p>Hoş geldiniz, <span id="currentUser"></span>!</p>
+    <!-- Ana Panel -->
+    <div id="mainPanel" class="main-panel" style="display: none;">
+        <!-- Hoşgeldin Mesajı -->
+        <div class="user-welcome">
+            <h2>BERKAY SORGU PANELİNE HOŞ GELDİNİZ</h2>
+            <p>Kullanıcı: <span id="currentUser"></span></p>
         </div>
 
-        <!-- Sorgulama Bölümü -->
-        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+        <!-- Sorgulama Paneli -->
+        <div class="query-panel">
             <h3 style="margin-bottom: 15px;">Sorgulama Paneli</h3>
-            <div style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 10px; margin-bottom: 15px;">
+            <div class="query-form">
                 <select class="form-control" id="apiType">
                     <option value="">Sorgu Türü Seçin</option>
                     <option value="tc">TC Sorgulama</option>
@@ -286,12 +382,26 @@
             <div class="results-content" id="resultsContent"></div>
         </div>
 
-        <!-- Çıkış Butonu -->
-        <button class="btn" onclick="logout()" style="background: #dc3545; margin-top: 20px;">Çıkış Yap</button>
+        <!-- VIP Bölümü -->
+        <div class="vip-section">
+            <h3>🚀 VIP ÜYELİK</h3>
+            <p>Tüm API'lara sınırsız erişim için:</p>
+            <a href="https://www.instagram.com/bxrkylae?igsh=djM4cGhnMWJ6YmNm" target="_blank" class="instagram-link">
+                <div class="instagram-logo"></div>
+                Instagram'dan İletişime Geçin
+            </a>
+        </div>
+
+        <!-- Admin Panel -->
+        <div class="admin-panel">
+            <h3 style="color: #ff6b6b; margin-bottom: 15px;">⚙️ Admin Paneli</h3>
+            <button class="btn" onclick="openAdminPanel()" style="background: #dc3545;">Admin Paneli Aç</button>
+            <button class="btn" onclick="logout()" style="background: #6c757d;">Çıkış Yap</button>
+        </div>
     </div>
 
     <script>
-        // Basit kar efekti
+        // Kar efekti
         function createSnow() {
             const container = document.getElementById('snow-container');
             for(let i = 0; i < 25; i++) {
@@ -302,6 +412,15 @@
                 snow.style.animationDelay = Math.random() * 5 + 's';
                 container.appendChild(snow);
             }
+        }
+
+        // Hoşgeldin popup
+        function showWelcomePopup() {
+            const popup = document.getElementById('welcomePopup');
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.display = 'none';
+            }, 3000);
         }
 
         // Tab geçişi
@@ -316,16 +435,53 @@
         // Kullanıcı yönetimi
         let currentUser = null;
         let users = JSON.parse(localStorage.getItem('berkay_users')) || [];
+        let logs = JSON.parse(localStorage.getItem('berkay_logs')) || [];
 
         // Google Giriş - GERÇEK
         function googleLogin() {
-            showMessage('Google girişi aktif ediliyor...', 'success');
-            // Gerçek implementasyon: Firebase Auth kullanılacak
+            // Firebase Authentication entegrasyonu
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    handleGoogleUser(user, 'login');
+                })
+                .catch((error) => {
+                    showMessage('Google giriş hatası: ' + error.message, 'error');
+                });
         }
 
         function googleRegister() {
-            showMessage('Google ile kayıt aktif ediliyor...', 'success');
-            // Gerçek implementasyon: Firebase Auth kullanılacak
+            const provider = new firebase.auth.GoogleAuthProvider();
+            firebase.auth().signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    handleGoogleUser(user, 'register');
+                })
+                .catch((error) => {
+                    showMessage('Google kayıt hatası: ' + error.message, 'error');
+                });
+        }
+
+        function handleGoogleUser(googleUser, action) {
+            const userData = {
+                id: googleUser.uid,
+                username: googleUser.displayName,
+                email: googleUser.email,
+                googleUser: true,
+                createdAt: new Date().toISOString()
+            };
+
+            if (action === 'register') {
+                users.push(userData);
+                localStorage.setItem('berkay_users', JSON.stringify(users));
+            }
+
+            currentUser = userData;
+            localStorage.setItem('berkay_current_user', JSON.stringify(userData));
+            showMainPanel();
+            showWelcomePopup();
+            showMessage('Google ile ' + (action === 'login' ? 'giriş' : 'kayıt') + ' başarılı!', 'success');
         }
 
         function register() {
@@ -348,6 +504,7 @@
                 username: username,
                 email: email,
                 password: password,
+                googleUser: false,
                 createdAt: new Date().toISOString()
             };
 
@@ -367,6 +524,7 @@
                 currentUser = user;
                 localStorage.setItem('berkay_current_user', JSON.stringify(user));
                 showMainPanel();
+                showWelcomePopup();
                 showMessage('Hoş geldiniz ' + user.username + '!', 'success');
             } else {
                 showMessage('Kullanıcı adı veya şifre hatalı!', 'error');
@@ -374,6 +532,9 @@
         }
 
         function logout() {
+            if (currentUser && currentUser.googleUser) {
+                firebase.auth().signOut();
+            }
             currentUser = null;
             localStorage.removeItem('berkay_current_user');
             document.getElementById('mainPanel').style.display = 'none';
@@ -389,7 +550,7 @@
             document.getElementById('currentUser').textContent = currentUser.username;
         }
 
-        // TÜM 17 API SORGULAMA
+        // API Sorgulama
         async function runQuery() {
             const apiType = document.getElementById('apiType').value;
             const queryValue = document.getElementById('queryValue').value;
@@ -403,80 +564,63 @@
 
             try {
                 const apiUrls = {
-                    // 1. TC Sorgulama
                     'tc': `https://dosya.alwaysdata.net/api/tc.php?tc=${queryValue}`,
-                    
-                    // 2. Ad Soyad Sorgulama
                     'adsoyad': `https://dosya.alwaysdata.net/api/adsoyad.php?ad=${encodeURIComponent(queryValue.split(' ')[0])}&soyad=${encodeURIComponent(queryValue.split(' ')[1] || '')}`,
-                    
-                    // 3. Aile Sorgulama
                     'aile': `https://dosya.alwaysdata.net/api/aile.php?tc=${queryValue}`,
-                    
-                    // 4. TC'den GSM
                     'tcgsm': `https://dosya.alwaysdata.net/api/tcgsm.php?tc=${queryValue}`,
-                    
-                    // 5. GSM'den TC
                     'gsmtc': `https://dosya.alwaysdata.net/api/gsmtc.php?gsm=${queryValue}`,
-                    
-                    // 6. Operatör Sorgulama
                     'operator': `https://dosya.alwaysdata.net/api/gncloperator.php?numara=${queryValue}`,
-                    
-                    // 7. Adres Sorgulama
                     'adres': `https://dosya.alwaysdata.net/api/adres.php?tc=${queryValue}`,
-                    
-                    // 8. Hane Adres Sorgulama
                     'haneadres': `https://dosya.alwaysdata.net/api/haneadres.php?tc=${queryValue}`,
-                    
-                    // 9. TC Sorgulama 2
                     'tc2': `https://dosya.alwaysdata.net/api/tc2.php?tc=${queryValue}`,
-                    
-                    // 10. Burç Sorgulama
                     'burc': `https://dosya.alwaysdata.net/api/burc.php?tc=${queryValue}`,
-                    
-                    // 11. Sülale Sorgulama
                     'sulale': `https://dosya.alwaysdata.net/api/sulale.php?tc=${queryValue}`,
-                    
-                    // 12. Yaş Sorgulama
                     'yas': `https://dosya.alwaysdata.net/api/yas.php?tc=${queryValue}`,
-                    
-                    // 13. Eş Sorgulama
                     'es': `https://dosya.alwaysdata.net/api/es.php?tc=${queryValue}`,
-                    
-                    // 14. Çocuk Sorgulama
                     'cocuk': `https://dosya.alwaysdata.net/api/cocuk.php?tc=${queryValue}`,
-                    
-                    // 15. Kardeş Sorgulama
                     'kardes': `https://dosya.alwaysdata.net/api/kardes.php?tc=${queryValue}`,
-                    
-                    // 16. Log Sorgulama
                     'log': `https://dosya.alwaysdata.net/api/log.php?site=${queryValue}`,
-                    
-                    // 17. Soyağacı Sorgulama
                     'soyagaci': `https://dosya.alwaysdata.net/api/soyagaci.php?tc=${queryValue}`
                 };
 
-                const apiUrl = apiUrls[apiType];
-                if (!apiUrl) {
-                    showMessage('Geçersiz sorgu türü!', 'error');
-                    return;
-                }
-
-                const response = await fetch(apiUrl);
-                if (!response.ok) {
-                    throw new Error(`API hatası: ${response.status}`);
-                }
-                
+                const response = await fetch(apiUrls[apiType]);
                 const result = await response.text();
                 
-                // Sonuçları düzenli göster
                 document.getElementById('resultsContent').textContent = result;
                 document.getElementById('results').style.display = 'block';
                 
             } catch (error) {
                 showMessage('API hatası: ' + error.message, 'error');
-                document.getElementById('resultsContent').textContent = 'Sorgu sırasında hata oluştu: ' + error.message;
-                document.getElementById('results').style.display = 'block';
             }
+        }
+
+        // Admin Panel
+        function openAdminPanel() {
+            const password = prompt('Admin Şifresi:');
+            if (password === 'berkaysiker7') {
+                showAdminPanel();
+            } else {
+                alert('Şifre yanlış!');
+            }
+        }
+
+        function showAdminPanel() {
+            const adminHTML = `
+                <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                    <h4 style="color: #ff6b6b; margin-bottom: 10px;">Sistem İstatistikleri</h4>
+                    <p><strong>Toplam Kullanıcı:</strong> ${users.length}</p>
+                    <p><strong>Toplam Sorgu:</strong> ${logs.length}</p>
+                    
+                    <h4 style="color: #ff6b6b; margin: 15px 0 10px 0;">Kullanıcı Listesi</h4>
+                    ${users.map((user, index) => `
+                        <div style="background: rgba(255,255,255,0.05); padding: 10px; margin: 5px 0; border-radius: 5px;">
+                            <strong>Kullanıcı ${index + 1}:</strong> ${user.username} (${user.email})
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            document.querySelector('.admin-panel').insertAdjacentHTML('beforeend', adminHTML);
         }
 
         function showMessage(message, type) {
@@ -494,7 +638,26 @@
                 currentUser = JSON.parse(savedUser);
                 showMainPanel();
             }
+
+            // Firebase başlatma (Google girişi için)
+            const firebaseConfig = {
+                apiKey: "YOUR_API_KEY",
+                authDomain: "YOUR_PROJECT.firebaseapp.com",
+                projectId: "YOUR_PROJECT_ID",
+                storageBucket: "YOUR_PROJECT.appspot.com",
+                messagingSenderId: "YOUR_SENDER_ID",
+                appId: "YOUR_APP_ID"
+            };
+            
+            // Firebase'i başlat
+            if (typeof firebase !== 'undefined') {
+                firebase.initializeApp(firebaseConfig);
+            }
         });
     </script>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 </body>
 </html>
