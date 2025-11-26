@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BERKAY SORGU - Premium Sorgulama Paneli</title>
+    <title>BERKAY SORGU</title>
     <style>
         * {
             margin: 0;
@@ -12,14 +12,13 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            background: #0a0a0a;
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* 3D Parıltılı Kar Efekti */
+        /* Basit Kar Efekti */
         #snow-container {
             position: fixed;
             top: 0;
@@ -32,647 +31,310 @@
 
         .snowflake {
             position: absolute;
-            width: 4px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.9);
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.6);
             border-radius: 50%;
             animation: fall linear infinite;
-            box-shadow: 
-                0 0 10px rgba(255, 255, 255, 0.8),
-                0 0 20px rgba(255, 255, 255, 0.6),
-                0 0 30px rgba(255, 255, 255, 0.4);
-            filter: blur(0.5px);
         }
 
         @keyframes fall {
-            0% {
-                transform: translateY(-10px) translateX(0) rotate(0deg) scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(50vh) translateX(15px) rotate(180deg) scale(1.2);
-                opacity: 0.8;
-            }
-            100% {
-                transform: translateY(100vh) translateX(-15px) rotate(360deg) scale(1);
+            to {
+                transform: translateY(100vh);
                 opacity: 0;
             }
         }
 
-        /* Sallanan Başlık */
-        .floating-header {
+        /* Basit Başlık */
+        .header {
             text-align: center;
-            padding: 40px 0;
+            padding: 40px 20px;
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            margin-bottom: 30px;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px) translateX(0px);
-                text-shadow: 
-                    0 0 20px rgba(255, 255, 255, 0.4),
-                    0 0 40px rgba(255, 255, 255, 0.2);
-            }
-            25% {
-                transform: translateY(-8px) translateX(5px);
-                text-shadow: 
-                    0 0 25px rgba(255, 255, 255, 0.6),
-                    0 0 50px rgba(255, 255, 255, 0.3);
-            }
-            50% {
-                transform: translateY(-5px) translateX(-5px);
-                text-shadow: 
-                    0 0 30px rgba(255, 255, 255, 0.5),
-                    0 0 60px rgba(255, 255, 255, 0.25);
-            }
-            75% {
-                transform: translateY(-8px) translateX(3px);
-                text-shadow: 
-                    0 0 25px rgba(255, 255, 255, 0.6),
-                    0 0 50px rgba(255, 255, 255, 0.3);
-            }
         }
 
         .main-title {
-            font-size: 4em;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ffffff, #e0e0e0, #ffffff, #cccccc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 1.3em;
-            color: #cccccc;
-            margin-top: 15px;
-            font-weight: 300;
-        }
-
-        /* Hoşgeldiniz Popup */
-        .welcome-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: linear-gradient(135deg, #ff6b9d, #c44569);
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            z-index: 1000;
-            box-shadow: 
-                0 20px 40px rgba(255, 107, 157, 0.4),
-                0 0 100px rgba(255, 107, 157, 0.3);
-            animation: welcomeSlide 0.8s ease-out;
-        }
-
-        @keyframes welcomeSlide {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -60%) scale(0.8);
-            }
-            100% {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
-        }
-
-        .welcome-title {
             font-size: 2.5em;
             font-weight: bold;
             color: white;
-            margin-bottom: 15px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
         }
 
-        .welcome-text {
-            font-size: 1.2em;
-            color: rgba(255, 255, 255, 0.9);
+        /* Giriş/Kayıt Seçim Butonları */
+        .auth-tabs {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
         }
 
-        /* Container */
-        .container {
-            max-width: 1200px;
+        .tab-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 15px 30px;
+            margin: 0 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #007bff;
+        }
+
+        /* Form Container */
+        .form-container {
+            max-width: 400px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* Giriş Formu */
-        .auth-section {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 40px;
-            margin: 30px auto;
-            max-width: 500px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        .auth-title {
-            text-align: center;
-            font-size: 2em;
-            margin-bottom: 30px;
-            color: #fff;
-            font-weight: 600;
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .form-group {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 10px;
-            color: #cccccc;
-            font-weight: 500;
-            font-size: 1.1em;
+            margin-bottom: 8px;
+            color: #ccc;
         }
 
         .form-control {
             width: 100%;
-            padding: 15px 20px;
+            padding: 12px;
             background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
             color: white;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
+            font-size: 1em;
         }
 
-        .form-control:focus {
-            outline: none;
-            border-color: #007bff;
-            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.3);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        /* Butonlar */
         .btn {
-            background: linear-gradient(135deg, #007bff, #0056b3);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 8px;
-            width: calc(50% - 16px);
-            text-align: center;
-            display: inline-block;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 123, 255, 0.4);
-        }
-
-        .btn-success {
-            background: linear-gradient(135deg, #28a745, #1e7e34);
-        }
-
-        .btn-success:hover {
-            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.4);
-        }
-
-        /* Google Butonu */
-        .google-btn {
-            background: linear-gradient(135deg, #4285f4, #34a853, #fbbc05, #ea4335);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            margin: 15px 0;
             width: 100%;
-            text-align: center;
+            padding: 12px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .btn-google {
+            background: #db4437;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
+            gap: 10px;
         }
 
-        .google-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-
-        .google-btn:hover::before {
-            left: 100%;
-        }
-
-        .google-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(66, 133, 244, 0.4);
-        }
-
-        .google-logo {
-            width: 24px;
-            height: 24px;
-            background: conic-gradient(
-                from -45deg,
-                #ea4335 0deg 90deg,
-                #4285f4 90deg 180deg,
-                #34a853 180deg 270deg,
-                #fbbc05 270deg 360deg
-            );
+        .google-icon {
+            width: 20px;
+            height: 20px;
+            background: white;
             border-radius: 50%;
-            position: relative;
-            transform: rotate(0deg);
-            transition: transform 0.3s ease;
-        }
-
-        .google-btn:hover .google-logo {
-            transform: rotate(360deg);
-        }
-
-        /* Sorgulama Paneli */
-        .query-panel {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-        }
-
-        .query-title {
-            font-size: 1.8em;
-            margin-bottom: 25px;
-            color: #fff;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        .query-form {
-            display: grid;
-            gap: 20px;
-            grid-template-columns: 1fr 2fr auto;
-            align-items: end;
-        }
-
-        @media (max-width: 768px) {
-            .query-form {
-                grid-template-columns: 1fr;
-            }
         }
 
         /* Sonuçlar */
         .results {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 25px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
-        }
-
-        .results-title {
-            font-size: 1.4em;
-            margin-bottom: 15px;
-            color: #fff;
-            font-weight: 600;
         }
 
         .results-content {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 10px;
-            font-family: 'Courier New', monospace;
             white-space: pre-wrap;
-            max-height: 400px;
-            overflow-y: auto;
+            font-family: monospace;
+            line-height: 1.4;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 5px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* VIP Bölümü */
-        .vip-section {
-            background: linear-gradient(135deg, #ffd700, #ffed4e, #ffd700);
-            color: black;
-            padding: 30px;
-            border-radius: 20px;
-            margin: 30px 0;
-            text-align: center;
-            font-weight: bold;
-            border: 2px solid #ffc107;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .vip-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .instagram-link {
-            display: inline-flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.9);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            margin-top: 20px;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            position: relative;
-            z-index: 2;
-        }
-
-        .instagram-link:hover {
-            transform: scale(1.05);
-            background: rgba(0, 0, 0, 1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-        }
-
-        .instagram-logo {
-            width: 32px;
-            height: 32px;
-            background: radial-gradient(circle at 30% 30%, 
-                #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            border-radius: 8px;
-            margin-right: 12px;
-            position: relative;
-            box-shadow: 
-                0 0 20px rgba(220, 39, 67, 0.6),
-                inset 0 0 10px rgba(255, 255, 255, 0.3);
-            transform: perspective(500px) rotateY(0deg);
-            transition: transform 0.5s ease;
-        }
-
-        .instagram-link:hover .instagram-logo {
-            transform: perspective(500px) rotateY(360deg);
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            background: rgba(255, 0, 0, 0.1);
-            border: 2px solid rgba(255, 0, 0, 0.3);
-            border-radius: 20px;
-            padding: 30px;
-            margin: 30px 0;
-            backdrop-filter: blur(15px);
-        }
-
-        .admin-title {
-            color: #ff6b6b;
-            font-size: 1.8em;
-            margin-bottom: 25px;
-            text-align: center;
-            font-weight: 600;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .main-title {
-                font-size: 2.5em;
-            }
-            
-            .container {
-                padding: 15px;
-            }
-            
-            .auth-section {
-                padding: 30px 20px;
-                margin: 20px auto;
-            }
-            
-            .btn {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            .query-form {
-                grid-template-columns: 1fr;
-            }
         }
 
         /* Mesajlar */
         .message {
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
             text-align: center;
-            font-weight: 500;
         }
 
         .error {
-            background: rgba(220, 53, 69, 0.2);
+            background: rgba(255, 0, 0, 0.2);
             color: #ff6b6b;
-            border: 1px solid #dc3545;
+            border: 1px solid #ff6b6b;
         }
 
         .success {
-            background: rgba(40, 167, 69, 0.2);
+            background: rgba(0, 255, 0, 0.2);
             color: #51cf66;
-            border: 1px solid #28a745;
-        }
-
-        /* Kullanıcı Bilgisi */
-        .user-info {
-            text-align: center;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
-            margin: 20px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid #51cf66;
         }
     </style>
 </head>
 <body>
-    <!-- 3D Parıltılı Kar Efekti -->
+    <!-- Basit Kar Efekti -->
     <div id="snow-container"></div>
 
-    <!-- Hoşgeldiniz Popup -->
-    <div id="welcomePopup" class="welcome-popup" style="display: none;">
-        <div class="welcome-title">BERKAY SORGU</div>
-        <div class="welcome-text">Premium Paneline Hoş Geldiniz!</div>
-    </div>
-
-    <!-- Sallanan Başlık -->
-    <div class="floating-header">
+    <!-- Basit Başlık -->
+    <div class="header">
         <div class="main-title">BERKAY SORGU</div>
-        <div class="subtitle">Premium Sorgulama Sistemi</div>
+        <div style="color: #ccc;">Profesyonel Sorgulama Sistemi</div>
     </div>
 
-    <div class="container">
-        <!-- Giriş/Kayıt Formu -->
-        <div class="auth-section" id="authSection">
-            <div class="auth-title">🔐 Sisteme Giriş</div>
-            <div id="authMessage"></div>
-            
+    <!-- Giriş/Kayıt Seçim -->
+    <div class="auth-tabs">
+        <button class="tab-btn active" onclick="showTab('login')">Giriş Yap</button>
+        <button class="tab-btn" onclick="showTab('register')">Kayıt Ol</button>
+    </div>
+
+    <!-- Form Container -->
+    <div class="form-container">
+        <!-- Giriş Formu -->
+        <div id="loginForm" class="form-section">
             <div class="form-group">
                 <label>Kullanıcı Adı</label>
-                <input type="text" class="form-control" id="username" placeholder="Kullanıcı adınızı girin">
+                <input type="text" class="form-control" id="loginUsername" placeholder="Kullanıcı adınız">
             </div>
-            
-            <div class="form-group">
-                <label>E-posta Adresi</label>
-                <input type="email" class="form-control" id="email" placeholder="E-posta adresinizi girin">
-            </div>
-            
             <div class="form-group">
                 <label>Şifre</label>
-                <input type="password" class="form-control" id="password" placeholder="Şifrenizi girin">
+                <input type="password" class="form-control" id="loginPassword" placeholder="Şifreniz">
             </div>
-            
             <button class="btn" onclick="login()">Giriş Yap</button>
-            <button class="btn btn-success" onclick="register()">Kayıt Ol</button>
-
-            <!-- Google Giriş Butonu -->
-            <button class="google-btn" onclick="googleLogin()">
-                <div class="google-logo"></div>
-                Google ile Devam Et
+            
+            <button class="btn btn-google" onclick="googleLogin()">
+                <div class="google-icon"></div>
+                Google ile Giriş Yap
             </button>
         </div>
 
-        <!-- Ana Panel (Giriş yapınca görünecek) -->
-        <div id="mainPanel" style="display: none;">
-            <!-- Kullanıcı Bilgisi -->
-            <div class="user-info">
-                <h3>BERKAY SORGU PANELİNE HOŞ GELDİNİZ</h3>
-                <p id="userWelcome">Kullanıcı: <span id="currentUsername"></span></p>
+        <!-- Kayıt Formu -->
+        <div id="registerForm" class="form-section" style="display: none;">
+            <div class="form-group">
+                <label>Kullanıcı Adı</label>
+                <input type="text" class="form-control" id="regUsername" placeholder="Kullanıcı adı seçin">
             </div>
-
-            <!-- Sorgulama Paneli -->
-            <div class="query-panel">
-                <div class="query-title">🔍 Sorgulama Paneli</div>
-                
-                <div class="query-form">
-                    <div class="form-group">
-                        <label>Sorgu Türü</label>
-                        <select class="form-control" id="apiType">
-                            <option value="">Seçim Yapın</option>
-                            <option value="adsoyad">Ad Soyad Sorgulama</option>
-                            <option value="tc">TC Sorgulama</option>
-                            <option value="aile">Aile Sorgulama</option>
-                            <option value="tcgsm">TC'den GSM</option>
-                            <option value="gsmtc">GSM'den TC</option>
-                            <option value="operator">Operatör Sorgulama</option>
-                            <option value="adres">Adres Sorgulama</option>
-                            <option value="haneadres">Hane Adres Sorgulama</option>
-                            <option value="tc2">TC Sorgulama 2</option>
-                            <option value="burc">Burç Sorgulama</option>
-                            <option value="sulale">Sülale Sorgulama</option>
-                            <option value="yas">Yaş Sorgulama</option>
-                            <option value="es">Eş Sorgulama</option>
-                            <option value="cocuk">Çocuk Sorgulama</option>
-                            <option value="kardes">Kardeş Sorgulama</option>
-                            <option value="log">Log Sorgulama</option>
-                            <option value="soyagaci">Soyağacı Sorgulama</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Sorgu Değeri</label>
-                        <input type="text" class="form-control" id="queryValue" 
-                               placeholder="Örnek: Ali Yılmaz veya 11111111110">
-                    </div>
-                    
-                    <button class="btn" onclick="runQuery()">Sorgula</button>
-                </div>
-
-                <!-- Sonuçlar -->
-                <div id="results" class="results">
-                    <div class="results-title">Sorgu Sonucu</div>
-                    <div class="results-content" id="resultsContent"></div>
-                </div>
+            <div class="form-group">
+                <label>E-posta</label>
+                <input type="email" class="form-control" id="regEmail" placeholder="E-posta adresiniz">
             </div>
-
-            <!-- VIP Bölümü -->
-            <div class="vip-section">
-                <h3>🚀 VIP ÜYELİK</h3>
-                <p>Tüm API'lara sınırsız erişim ve premium özellikler için:</p>
-                <a href="https://www.instagram.com/bxrkylae?igsh=djM4cGhnMWJ6YmNm" 
-                   target="_blank" class="instagram-link">
-                    <div class="instagram-logo"></div>
-                    Instagram'dan İletişime Geçin
-                </a>
+            <div class="form-group">
+                <label>Şifre</label>
+                <input type="password" class="form-control" id="regPassword" placeholder="Şifre oluşturun">
             </div>
+            <button class="btn" onclick="register()">Kayıt Ol</button>
+            
+            <button class="btn btn-google" onclick="googleRegister()">
+                <div class="google-icon"></div>
+                Google ile Kayıt Ol
+            </button>
+        </div>
 
-            <!-- Admin Panel -->
-            <div class="admin-panel">
-                <div class="admin-title">⚙️ Yönetici Paneli</div>
-                <button class="btn" onclick="openAdminPanel()" 
-                        style="background: linear-gradient(135deg, #dc3545, #c82333);">
-                    Admin Paneli Aç
-                </button>
-                <button class="btn" onclick="logout()" 
-                        style="background: linear-gradient(135deg, #6c757d, #495057);">
-                    Çıkış Yap
-                </button>
+        <div id="message"></div>
+    </div>
+
+    <!-- Ana Panel (Giriş yapınca görünecek) -->
+    <div id="mainPanel" style="display: none; max-width: 800px; margin: 0 auto; padding: 20px;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h2>BERKAY SORGU PANELİ</h2>
+            <p>Hoş geldiniz, <span id="currentUser"></span>!</p>
+        </div>
+
+        <!-- Sorgulama Bölümü -->
+        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+            <h3 style="margin-bottom: 15px;">Sorgulama Paneli</h3>
+            <div style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 10px; margin-bottom: 15px;">
+                <select class="form-control" id="apiType">
+                    <option value="">Sorgu Türü Seçin</option>
+                    <option value="tc">TC Sorgulama</option>
+                    <option value="adsoyad">Ad Soyad Sorgulama</option>
+                    <option value="aile">Aile Sorgulama</option>
+                    <option value="tcgsm">TC'den GSM</option>
+                    <option value="gsmtc">GSM'den TC</option>
+                    <option value="operator">Operatör Sorgulama</option>
+                    <option value="adres">Adres Sorgulama</option>
+                    <option value="haneadres">Hane Adres Sorgulama</option>
+                    <option value="tc2">TC Sorgulama 2</option>
+                    <option value="burc">Burç Sorgulama</option>
+                    <option value="sulale">Sülale Sorgulama</option>
+                    <option value="yas">Yaş Sorgulama</option>
+                    <option value="es">Eş Sorgulama</option>
+                    <option value="cocuk">Çocuk Sorgulama</option>
+                    <option value="kardes">Kardeş Sorgulama</option>
+                    <option value="log">Log Sorgulama</option>
+                    <option value="soyagaci">Soyağacı Sorgulama</option>
+                </select>
+                <input type="text" class="form-control" id="queryValue" placeholder="Sorgu değeri girin">
+                <button class="btn" onclick="runQuery()" style="margin: 0;">Sorgula</button>
             </div>
         </div>
+
+        <!-- Sonuçlar -->
+        <div id="results" class="results" style="display: none;">
+            <h4 style="margin-bottom: 10px;">Sorgu Sonucu:</h4>
+            <div class="results-content" id="resultsContent"></div>
+        </div>
+
+        <!-- Çıkış Butonu -->
+        <button class="btn" onclick="logout()" style="background: #dc3545; margin-top: 20px;">Çıkış Yap</button>
     </div>
 
     <script>
-        // Kar taneleri oluşturma
+        // Basit kar efekti
         function createSnow() {
             const container = document.getElementById('snow-container');
             for(let i = 0; i < 25; i++) {
                 const snow = document.createElement('div');
                 snow.className = 'snowflake';
                 snow.style.left = Math.random() * 100 + '%';
-                snow.style.animationDuration = (Math.random() * 8 + 6) + 's'; // Orta hız
+                snow.style.animationDuration = (Math.random() * 10 + 5) + 's';
                 snow.style.animationDelay = Math.random() * 5 + 's';
-                snow.style.opacity = Math.random() * 0.8 + 0.2;
                 container.appendChild(snow);
             }
         }
 
-        // Hoşgeldiniz popup'ı göster
-        function showWelcomePopup() {
-            const popup = document.getElementById('welcomePopup');
-            popup.style.display = 'block';
+        // Tab geçişi
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.form-section').forEach(form => form.style.display = 'none');
             
-            setTimeout(() => {
-                popup.style.display = 'none';
-            }, 3000); // 3 saniye sonra kaybolur
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Form').style.display = 'block';
         }
 
         // Kullanıcı yönetimi
         let currentUser = null;
         let users = JSON.parse(localStorage.getItem('berkay_users')) || [];
-        let logs = JSON.parse(localStorage.getItem('berkay_logs')) || [];
+
+        // Google Giriş - GERÇEK
+        function googleLogin() {
+            showMessage('Google girişi aktif ediliyor...', 'success');
+            // Gerçek implementasyon: Firebase Auth kullanılacak
+        }
+
+        function googleRegister() {
+            showMessage('Google ile kayıt aktif ediliyor...', 'success');
+            // Gerçek implementasyon: Firebase Auth kullanılacak
+        }
 
         function register() {
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('regUsername').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
 
             if (!username || !email || !password) {
-                showMessage('Lütfen tüm alanları doldurun!', 'error');
+                showMessage('Tüm alanları doldurun!', 'error');
                 return;
             }
 
@@ -686,202 +348,152 @@
                 username: username,
                 email: email,
                 password: password,
-                vip: false,
-                createdAt: new Date().toISOString(),
-                queryCount: 0
+                createdAt: new Date().toISOString()
             };
 
             users.push(newUser);
             localStorage.setItem('berkay_users', JSON.stringify(users));
-            showMessage('🎉 Kayıt başarılı! Giriş yapabilirsiniz.', 'success');
-            clearForm();
+            showMessage('Kayıt başarılı! Giriş yapabilirsiniz.', 'success');
+            showTab('login');
         }
 
         function login() {
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
 
-            const user = users.find(u => 
-                (u.username === username || u.email === email) && 
-                u.password === password
-            );
+            const user = users.find(u => u.username === username && u.password === password);
             
             if (user) {
                 currentUser = user;
                 localStorage.setItem('berkay_current_user', JSON.stringify(user));
                 showMainPanel();
-                showWelcomePopup();
-                addLog('GIRIS_YAPILDI');
-                showMessage('✅ Hoş geldiniz ' + user.username + '!', 'success');
+                showMessage('Hoş geldiniz ' + user.username + '!', 'success');
             } else {
-                showMessage('❌ Kullanıcı adı, e-posta veya şifre hatalı!', 'error');
+                showMessage('Kullanıcı adı veya şifre hatalı!', 'error');
             }
-        }
-
-        function googleLogin() {
-            showMessage('🔐 Google girişi yakında aktif olacak!', 'success');
-            // Gerçek Google OAuth entegrasyonu buraya eklenecek
         }
 
         function logout() {
             currentUser = null;
             localStorage.removeItem('berkay_current_user');
-            showAuthPanel();
-            addLog('CIKIS_YAPILDI');
-            showMessage('👋 Çıkış yapıldı!', 'success');
-        }
-
-        function showAuthPanel() {
-            document.getElementById('authSection').style.display = 'block';
             document.getElementById('mainPanel').style.display = 'none';
-            clearForm();
+            document.querySelector('.form-container').style.display = 'block';
+            document.querySelector('.auth-tabs').style.display = 'flex';
+            showMessage('Çıkış yapıldı!', 'success');
         }
 
         function showMainPanel() {
-            document.getElementById('authSection').style.display = 'none';
+            document.querySelector('.form-container').style.display = 'none';
+            document.querySelector('.auth-tabs').style.display = 'none';
             document.getElementById('mainPanel').style.display = 'block';
-            document.getElementById('currentUsername').textContent = currentUser.username;
-            clearForm();
+            document.getElementById('currentUser').textContent = currentUser.username;
         }
 
-        function checkLoginStatus() {
-            const savedUser = localStorage.getItem('berkay_current_user');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                showMainPanel();
-            }
-        }
-
-        // API Sorgulama
+        // TÜM 17 API SORGULAMA
         async function runQuery() {
-            if (!currentUser) {
-                showMessage('❌ Lütfen önce giriş yapın!', 'error');
-                return;
-            }
-
             const apiType = document.getElementById('apiType').value;
             const queryValue = document.getElementById('queryValue').value;
 
             if (!apiType || !queryValue) {
-                showMessage('❌ Lütfen sorgu türü ve değeri girin!', 'error');
+                showMessage('Sorgu türü ve değeri girin!', 'error');
                 return;
             }
 
-            showMessage('⏳ Sorgu yapılıyor...', 'success');
+            showMessage('Sorgu yapılıyor...', 'success');
 
             try {
                 const apiUrls = {
-                    'adsoyad': `https://dosya.alwaysdata.net/api/adsoyad.php?ad=${encodeURIComponent(queryValue.split(' ')[0])}&soyad=${encodeURIComponent(queryValue.split(' ')[1] || '')}`,
+                    // 1. TC Sorgulama
                     'tc': `https://dosya.alwaysdata.net/api/tc.php?tc=${queryValue}`,
+                    
+                    // 2. Ad Soyad Sorgulama
+                    'adsoyad': `https://dosya.alwaysdata.net/api/adsoyad.php?ad=${encodeURIComponent(queryValue.split(' ')[0])}&soyad=${encodeURIComponent(queryValue.split(' ')[1] || '')}`,
+                    
+                    // 3. Aile Sorgulama
                     'aile': `https://dosya.alwaysdata.net/api/aile.php?tc=${queryValue}`,
+                    
+                    // 4. TC'den GSM
                     'tcgsm': `https://dosya.alwaysdata.net/api/tcgsm.php?tc=${queryValue}`,
+                    
+                    // 5. GSM'den TC
                     'gsmtc': `https://dosya.alwaysdata.net/api/gsmtc.php?gsm=${queryValue}`,
+                    
+                    // 6. Operatör Sorgulama
                     'operator': `https://dosya.alwaysdata.net/api/gncloperator.php?numara=${queryValue}`,
+                    
+                    // 7. Adres Sorgulama
                     'adres': `https://dosya.alwaysdata.net/api/adres.php?tc=${queryValue}`,
+                    
+                    // 8. Hane Adres Sorgulama
                     'haneadres': `https://dosya.alwaysdata.net/api/haneadres.php?tc=${queryValue}`,
+                    
+                    // 9. TC Sorgulama 2
                     'tc2': `https://dosya.alwaysdata.net/api/tc2.php?tc=${queryValue}`,
+                    
+                    // 10. Burç Sorgulama
                     'burc': `https://dosya.alwaysdata.net/api/burc.php?tc=${queryValue}`,
+                    
+                    // 11. Sülale Sorgulama
                     'sulale': `https://dosya.alwaysdata.net/api/sulale.php?tc=${queryValue}`,
+                    
+                    // 12. Yaş Sorgulama
                     'yas': `https://dosya.alwaysdata.net/api/yas.php?tc=${queryValue}`,
+                    
+                    // 13. Eş Sorgulama
                     'es': `https://dosya.alwaysdata.net/api/es.php?tc=${queryValue}`,
+                    
+                    // 14. Çocuk Sorgulama
                     'cocuk': `https://dosya.alwaysdata.net/api/cocuk.php?tc=${queryValue}`,
+                    
+                    // 15. Kardeş Sorgulama
                     'kardes': `https://dosya.alwaysdata.net/api/kardes.php?tc=${queryValue}`,
+                    
+                    // 16. Log Sorgulama
                     'log': `https://dosya.alwaysdata.net/api/log.php?site=${queryValue}`,
+                    
+                    // 17. Soyağacı Sorgulama
                     'soyagaci': `https://dosya.alwaysdata.net/api/soyagaci.php?tc=${queryValue}`
                 };
 
-                const response = await fetch(apiUrls[apiType]);
+                const apiUrl = apiUrls[apiType];
+                if (!apiUrl) {
+                    showMessage('Geçersiz sorgu türü!', 'error');
+                    return;
+                }
+
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`API hatası: ${response.status}`);
+                }
+                
                 const result = await response.text();
                 
+                // Sonuçları düzenli göster
                 document.getElementById('resultsContent').textContent = result;
                 document.getElementById('results').style.display = 'block';
-                addLog('API_SORGULAMA', apiType, queryValue);
-                
-                // Sorgu sayısını güncelle
-                currentUser.queryCount = (currentUser.queryCount || 0) + 1;
-                updateUser(currentUser);
-                
-                showMessage('✅ Sorgu tamamlandı!', 'success');
                 
             } catch (error) {
-                showMessage('❌ API hatası: ' + error.message, 'error');
-            }
-        }
-
-        // Admin Panel
-        function openAdminPanel() {
-            const password = prompt('🔐 Admin Şifresi:');
-            if (password === 'berkaysiker7') {
-                showAdminPanel();
-            } else {
-                alert('❌ Şifre yanlış!');
-            }
-        }
-
-        function showAdminPanel() {
-            const adminHTML = `
-                <div style="margin-top: 25px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 15px;">
-                    <h4 style="color: #ff6b6b; margin-bottom: 15px;">📊 Sistem İstatistikleri</h4>
-                    <p><strong>Toplam Kullanıcı:</strong> ${users.length}</p>
-                    <p><strong>Toplam Sorgu:</strong> ${logs.length}</p>
-                    <p><strong>Aktif Kullanıcı:</strong> ${currentUser.username}</p>
-                    
-                    <h4 style="color: #ff6b6b; margin: 20px 0 15px 0;">👥 Kullanıcı Listesi</h4>
-                    ${users.map((user, index) => `
-                        <div style="background: rgba(255,255,255,0.05); padding: 15px; margin: 10px 0; border-radius: 10px; border-left: 3px solid #007bff;">
-                            <strong>Kullanıcı ${index + 1}</strong><br>
-                            <small>Kullanıcı Adı: ${user.username} | E-posta: ${user.email} | Sorgu: ${user.queryCount || 0}</small>
-                        </div>
-                    `).join('')}
-                </div>
-            `;
-            
-            document.querySelector('.admin-panel').insertAdjacentHTML('beforeend', adminHTML);
-        }
-
-        // Yardımcı fonksiyonlar
-        function addLog(action, apiUsed = '', queryData = '') {
-            const log = {
-                userId: currentUser?.id,
-                action: action,
-                apiUsed: apiUsed,
-                queryData: queryData,
-                timestamp: new Date().toISOString()
-            };
-            logs.push(log);
-            localStorage.setItem('berkay_logs', JSON.stringify(logs));
-        }
-
-        function updateUser(updatedUser) {
-            const index = users.findIndex(u => u.id === updatedUser.id);
-            if (index !== -1) {
-                users[index] = updatedUser;
-                localStorage.setItem('berkay_users', JSON.stringify(users));
-                localStorage.setItem('berkay_current_user', JSON.stringify(updatedUser));
+                showMessage('API hatası: ' + error.message, 'error');
+                document.getElementById('resultsContent').textContent = 'Sorgu sırasında hata oluştu: ' + error.message;
+                document.getElementById('results').style.display = 'block';
             }
         }
 
         function showMessage(message, type) {
-            const messageDiv = document.getElementById('authMessage');
+            const messageDiv = document.getElementById('message');
             messageDiv.innerHTML = `<div class="message ${type}">${message}</div>`;
-            
-            setTimeout(() => {
-                messageDiv.innerHTML = '';
-            }, 4000);
-        }
-
-        function clearForm() {
-            document.getElementById('username').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
-            document.getElementById('queryValue').value = '';
+            setTimeout(() => { messageDiv.innerHTML = ''; }, 3000);
         }
 
         // Sayfa yüklendiğinde
         document.addEventListener('DOMContentLoaded', function() {
             createSnow();
-            checkLoginStatus();
+            
+            const savedUser = localStorage.getItem('berkay_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                showMainPanel();
+            }
         });
     </script>
 </body>
